@@ -1,47 +1,47 @@
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+     final static String NAME = "name";
+    public static void main(String[] args) throws IOException {
 
-        String jsonStr = "C:\\Users\\andrei.lisa\\IdeaProjects\\JsonParser\\src\\main\\resources\\json\\file.json";
+        String jsonStr = "C:\\Users\\andrei.lisa\\IdeaProjects\\JsonParser\\src\\main\\resources\\json\\file2.json";
         JsonParser parser = new JsonParser();
         JsonElement jsonElement = parser.parse(new FileReader(jsonStr));
-        processJsonElement(jsonElement);
+            parseJsonElement(jsonElement);
+
     }
 
-
-    public static void processJsonElement(JsonElement e) {
-        if (e.isJsonArray()) {
-            processJsonArray(e.getAsJsonArray());
-        } else if (e.isJsonObject()) {
-            processJsonObject(e.getAsJsonObject());
+    public static void parseJsonElement(JsonElement jsonElement) {
+        if (jsonElement.isJsonArray()) {
+            parseJsonArray(jsonElement.getAsJsonArray());
+        } else if (jsonElement.isJsonObject()) {
+            parseJsonObject(jsonElement.getAsJsonObject());
         }
     }
 
-    public static void processJsonArray(JsonArray array) {
+    public static void parseJsonArray(JsonArray array) {
         for (JsonElement value : array) {
-            processJsonElement(value);
+            parseJsonElement(value);
         }
     }
 
-
-    public static void processJsonObject(JsonObject object) {
+    public static void parseJsonObject(JsonObject object) {
         Set<Map.Entry<String, JsonElement>> members = object.entrySet();
         for (Map.Entry<String, JsonElement> value : members) {
+            if (value.getKey().equals(NAME))
             System.out.println(value.getKey() + ": " + value.getValue());
-
-            processJsonElement(value.getValue());
+            parseJsonElement(value.getValue());
         }
     }
 }
+
+
+
 
 
 
